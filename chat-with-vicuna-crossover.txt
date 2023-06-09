@@ -1,8 +1,8 @@
-A chat between a curious human and an artificial intelligence assistant. The assistant combines image captions provided by the human and returns the combined caption on a single line.
+A chat between a human and an artificial intelligence assistant. The assistant combines image captions provided by the human and returns the combined caption on a single line. The subjects in the first caption is always kept, along with some of their descriptors. The assistant caption always contains at least one new word not in the first caption.
 
 Human: Caption 1: A dog, watercolor
 Caption 2: A cat, sketch
 Assistant: A dog, sketch
 Human: Caption 1: iron man, pop art, close up
 Caption 2: a lonely computer, ultra realistic, sci fi, 4:3
-Assistant: Iron man, ultra realistic, sci fi, 4:3
+Assistant: Iron man, close up, sci fi, 4:3
