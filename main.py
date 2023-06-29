@@ -10,12 +10,12 @@ from .worker import *
 
 
 # CONFIG
-root = "/home/garbus/genetic_prompting/llambalancer"
+root = "/home/garbus/interactivediffusion/zooweellama"
 model = f"{root}/models/ggml-vic13b-q5_1.bin"
 prompt_file = f"{root}/chat-with-vicuna-crossover.txt"
 stop = ["Human:", "\n"]
 max_tokens = 128
-n_threads = 8
+n_threads = 32
 
 class Prompt(BaseModel):
     prompt: str
@@ -28,12 +28,11 @@ prompt_tokens = llm.tokenize(system_prompt.encode())
 llm.eval(prompt_tokens)
 state = llm.save_state()
 app = FastAPI()
-@app.post("/")
+@app.post("/generate")
 def submit(p: Prompt):
-    global iqueue, odict, qlock, qid
     print(f"Received prompt: {p.prompt}")
-    output = generate_until(system_prompt,
-                            p.prompt,
+    output = generate_until(system_prompt.strip(),
+                            p.prompt.strip(),
                             llm,
                             state,
                             max_tokens=max_tokens,
