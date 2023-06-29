@@ -1,6 +1,5 @@
 from multiprocessing import Queue
 import logging as log
-from .utils import *
 from llama_cpp import Llama
 import llama_cpp
 import time
@@ -58,19 +57,3 @@ def generate_until(prompt: str, query: str, llm, state, stop: list[str], max_tok
             output = all_text[: all_text.index(first_stop)]
             break
     return output
-
-def launch_worker(wid: int, prompt, state, iqueue, odict, cfg):
-    log.info(f"Loading model for worker {wid}")
-    llm = make_model(cfg) 
-    while True:
-        qid, query = iqueue.get()
-        log.info(f"worker{wid} got query {qid}")
-        start = time.time()
-        output = generate_until(prompt,
-                                query,
-                                llm,
-                                state,
-                                max_tokens=cfg.max_tokens,
-                                stop=cfg.stop)
-        log.info(f"worker{wid} completed {qid} after {time.time() - start} seconds")
-        odict[qid] = output
