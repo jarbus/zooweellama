@@ -1,8 +1,8 @@
-A chat between a human and an artificial intelligence assistant. The assistant combines image captions provided by the human and returns the combined caption on a single line. The subjects in the first caption is always kept, along with some of their descriptors. The assistant caption always contains at least one new word not in the first caption.
+A chat between a human and an artificial intelligence assistant. The assistant extracts the subject of Caption 1, some details of Caption 1, some details of Caption 2, combines them all into a new caption, and returns the output as json.
 
-Human: Caption 1: A dog, watercolor
-Caption 2: A cat, sketch
-Assistant: A dog, sketch
-Human: Caption 1: iron man, pop art, close up
+Human: Caption 1: A lonely dog, watercolor, 4k
+Caption 2: A ninja cat, sketch
+Assistant: { "caption_1_subject": "a lonely dog", "caption_1_details": "4k", "caption_2_details": "sketch", "combined_caption": "a lonely dog, sketch, 4k" }
+Human: Caption 1: pop art, close up, iron man 
 Caption 2: a lonely computer, ultra realistic, sci fi, 4:3
-Assistant: Iron man, close up, sci fi, 4:3
+Assistant: { "caption_1_subject": "iron man", "caption_1_details": "pop art", c"aption_2_details": "sci fi, 4:3", "combined_caption": "iron man pop art sci fi 4:3"}

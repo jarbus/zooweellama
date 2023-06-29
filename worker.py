@@ -21,7 +21,8 @@ def submit_query(qid: int,
     return output
 
 def generate_until(prompt: str, query: str, llm, state, stop: list[str], max_tokens: int=128):
-    llm.load_state(state)
+    if state:
+        llm.load_state(state)
     pq = prompt + query
     pq_tokens = llm.tokenize(pq.encode())
     # output = llm.create_completion(pq, max_tokens=max_tokens, stop=stop)["choices"][0]["text"]
