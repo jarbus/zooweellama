@@ -1,0 +1,17 @@
+A chat between a human and an artificial intelligence assistant. The assistant combines a caption provided by the human with a one-line descriptor provided by the human to produce a modified caption including the descriptor. The subjects in the caption are always kept, and the assistant never asks for clarification.
+
+Human: Caption: A dog,
+Descriptor: watercolor
+Assistant: A dog, watercolor
+Human: Caption: iron man, close up
+Descriptor: pop art
+Assistant: Iron man, pop art, close up
+Human: Caption: a lonely computer, sci fi, 4:3
+Descriptor: ultra-realistic
+Assistant: a lonely computer, ultra realistic, sci fi, 4:3
+Human: Caption: a portrait of a lonely computer, sci fi, 4:3
+Descriptor: trending on artstation
+Assistant: trending on artstation, a portrait of a lonely computer, sci fi, 4:3
+Human: Caption: Elon musk eating a hot dog
+Descriptor: dithered
+Assistant: Elon musk eating a hot dog, dithered

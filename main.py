@@ -18,6 +18,7 @@ model = f"{root}/models/vicuna-7b-v1.3.ggmlv3.q5_1.bin"
 #prompt_file = f"{root}/chat-with-vicuna-crossover.txt"
 extract_prompt_file = f"{root}/chat-with-vicuna-extract.txt"
 combine_prompt_file = f"{root}/chat-with-vicuna-combine.txt"
+crossover_prompt_file = f"{root}/chat-with-vicuna-crossover.txt"
 stop = ["Human:", "\n"]
 max_tokens = 77
 n_threads = 4 if use_gpu == "1" else 24
@@ -31,18 +32,23 @@ with open(extract_prompt_file, "r") as f:
     extract_prompt = f.read().strip()
 with open(combine_prompt_file, "r") as f:
     combine_prompt = f.read().strip()
+with open(crossover_prompt_file, "r") as f:
+    crossover_prompt = f.read().strip()
 
 llm = Llama(model_path=model, n_threads=n_threads, n_gpu_layers=n_gpu_layers)
 # eval extract
 prompt_tokens = llm.tokenize(extract_prompt.encode())
 llm.eval(prompt_tokens)
 extract_state = llm.save_state()
-print("extract_state", extract_state)
 # eval combine
 prompt_tokens = llm.tokenize(combine_prompt.encode())
 llm.eval(prompt_tokens)
 combine_state = llm.save_state()
-print("combine_state", combine_state)
+# eval crossover
+prompt_tokens = llm.tokenize(crossover_prompt.encode())
+llm.eval(prompt_tokens)
+crossover_state = llm.save_state()
+
 
 app = FastAPI()
 @app.post("/extract")
@@ -68,3 +74,15 @@ def combine(p: Prompt):
                             stop=stop)
     print(f"{p.prompt}\nCOMBINE: {comb_prompt}")
     return comb_prompt
+
+
+@app.post("/crossover")
+def crossover(p: Prompt):
+    crossed_prompt = generate_until(crossover_prompt,
+                            p.prompt.strip(),
+                            llm,
+                            crossover_state,
+                            max_tokens=max_tokens,
+                            stop=stop)
+    print(f"{p.prompt}\CROSSED: {crossed_prompt}")
+    return crossed_prompt
