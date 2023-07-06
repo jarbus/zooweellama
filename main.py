@@ -15,10 +15,6 @@ use_gpu = os.environ.get("USE_GPU", False)
 root = "/home/garbus/interactivediffusion/zooweellama"
 # model = f"{root}/models/ggml-vic13b-q5_1.bin"
 model = f"{root}/models/vicuna-7b-v1.3.ggmlv3.q5_1.bin"
-#prompt_file = f"{root}/chat-with-vicuna-crossover.txt"
-extract_prompt_file = f"{root}/chat-with-vicuna-extract.txt"
-combine_prompt_file = f"{root}/chat-with-vicuna-combine.txt"
-crossover_prompt_file = f"{root}/chat-with-vicuna-crossover.txt"
 stop = ["Human:", "\n"]
 max_tokens = 77
 n_threads = 4 if use_gpu == "1" else 24
@@ -28,12 +24,23 @@ print(f"Using {n_gpu_layers} GPU layers")
 class Prompt(BaseModel):
     prompt: str
 
+#prompt_file = f"{root}/chat-with-vicuna-crossover.txt"
+extract_prompt_file = f"{root}/chat-with-vicuna-extract.txt"
+combine_prompt_file = f"{root}/chat-with-vicuna-combine.txt"
+crossover_prompt_file = f"{root}/chat-with-vicuna-crossover.txt"
+sub_extract_prompt_file = f"{root}/chat-with-vicuna-subject-extract.txt"
+sub_reinsert_prompt_file = f"{root}/chat-with-vicuna-subject-reinsert.txt"
+
 with open(extract_prompt_file, "r") as f:
     extract_prompt = f.read().strip()
 with open(combine_prompt_file, "r") as f:
     combine_prompt = f.read().strip()
 with open(crossover_prompt_file, "r") as f:
     crossover_prompt = f.read().strip()
+with open(sub_extract_prompt_file, "r") as f:
+    sub_extract_prompt = f.read().strip()
+with open(sub_reinsert_prompt_file, "r") as f:
+    sub_reinsert_prompt = f.read().strip()
 
 llm = Llama(model_path=model, n_threads=n_threads, n_gpu_layers=n_gpu_layers)
 # eval extract
@@ -86,3 +93,27 @@ def crossover(p: Prompt):
                             stop=stop)
     print(f"{p.prompt}\CROSSED: {crossed_prompt}")
     return crossed_prompt
+
+@app.post("/subject-extract")
+def subject_extract(p: Prompt):
+    subex = generate_until(sub_extract_prompt,
+                            p.prompt.strip(),
+                            llm,
+                            None,
+                            max_tokens=max_tokens,
+                            stop=stop)
+
+    print(f"{p.prompt}\nSUBEXTRACT: {subex}")
+    return subex
+
+@app.post("/subject-reinsert")
+def subject_reinsert(p: Prompt):
+    subre = generate_until(sub_reinsert_prompt,
+                            p.prompt.strip(),
+                            llm,
+                            None,
+                            max_tokens=max_tokens,
+                            stop=stop)
+
+    print(f"{p.prompt}\nSUBREINSERT: {subre}")
+    return subre

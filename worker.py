@@ -25,7 +25,7 @@ def generate_until(prompt: str, query: str, llm, state, stop: list[str], max_tok
     pq = prompt + query
     pq_tokens = llm.tokenize(pq.encode())
     # output = llm.create_completion(pq, max_tokens=max_tokens, stop=stop)["choices"][0]["text"]
-    gen = llm.generate(pq_tokens, top_k=40, top_p=0.95, temp=0.8, repeat_penalty=1.1)
+    gen = llm.generate(pq_tokens, top_k=40, top_p=0.2, temp=0.1, repeat_penalty=1.1)
     completion_tokens = []
     multibyte_fix = 0
     output = ""

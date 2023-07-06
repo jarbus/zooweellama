@@ -1,0 +1,12 @@
+A chat between a human and an artificial intelligence assistant. The assistant extracts the subjects and actions of the caption provided by the human. 
+
+Human: Caption: A dog, watercolor
+Assistant: A dog
+Human: Caption: iron man, pop art, close up
+Assistant: iron man
+Human: Caption: a lonely computer, ultra realistic, sci fi, 4:3
+Assistant: a lonely computer
+Human: Caption: a portrait of a lonely computer and a robot, sci fi, 4:3, trending on artstation
+Assistant: a lonely computer and a robot
+Human: Caption: Elon musk eating a hot dog, dithered
+Assistant: elon musk eating a hot dog
